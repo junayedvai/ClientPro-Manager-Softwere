@@ -1,0 +1,50 @@
+<UserControl x:Class="ClientProManager.Views.BackupView"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
+    <DockPanel>
+        <Border DockPanel.Dock="Top" Style="{StaticResource Card}">
+            <StackPanel>
+                <TextBlock Text="Backup &amp; Restore" FontSize="28" FontWeight="Bold" />
+                <WrapPanel Margin="0,10,0,0">
+                    <Button Content="Create Backup" Command="{Binding BackupCommand}" />
+                    <Button Content="Reload Logs" Command="{Binding LoadCommand}" Style="{StaticResource SecondaryButton}" />
+                    <Button Content="Cloud Placeholder" Command="{Binding CloudPlaceholderCommand}" Style="{StaticResource SecondaryButton}" />
+                </WrapPanel>
+                <TextBlock Text="{Binding LastBackupPath, StringFormat=Last backup: {0}}" Foreground="{StaticResource MutedTextBrush}" Margin="4,6,0,0" />
+            </StackPanel>
+        </Border>
+
+        <Grid>
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="*" />
+                <ColumnDefinition Width="420" />
+            </Grid.ColumnDefinitions>
+
+            <Border Grid.Column="0" Style="{StaticResource Card}">
+                <StackPanel>
+                    <TextBlock Text="Backup Logs" FontSize="18" FontWeight="SemiBold" Margin="0,0,0,8" />
+                    <DataGrid ItemsSource="{Binding BackupLogs}">
+                        <DataGrid.Columns>
+                            <DataGridTextColumn Header="Created" Binding="{Binding CreatedAt, StringFormat=g}" Width="150" />
+                            <DataGridTextColumn Header="Type" Binding="{Binding BackupType}" Width="100" />
+                            <DataGridTextColumn Header="Status" Binding="{Binding Status}" Width="100" />
+                            <DataGridTextColumn Header="File" Binding="{Binding BackupFilePath}" Width="*" />
+                        </DataGrid.Columns>
+                    </DataGrid>
+                </StackPanel>
+            </Border>
+
+            <Border Grid.Column="1" Style="{StaticResource Card}">
+                <StackPanel>
+                    <TextBlock Text="Restore Database" FontSize="20" FontWeight="SemiBold" />
+                    <TextBlock Text="Backup File Path" FontWeight="SemiBold" />
+                    <TextBox Text="{Binding RestoreFilePath, UpdateSourceTrigger=PropertyChanged}" AcceptsReturn="True" Height="90" />
+                    <Button Content="Restore From Backup" Command="{Binding RestoreCommand}" Style="{StaticResource DangerButton}" HorizontalAlignment="Stretch" />
+                    <TextBlock Text="Restore overwrites the SQLite database. Restart the app after restore."
+                               Foreground="{StaticResource MutedTextBrush}"
+                               Margin="0,12,0,0" />
+                </StackPanel>
+            </Border>
+        </Grid>
+    </DockPanel>
+</UserControl>

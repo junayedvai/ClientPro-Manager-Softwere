@@ -1,0 +1,115 @@
+<UserControl x:Class="ClientProManager.Views.InvoicesView"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
+    <Grid>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="380" />
+            <ColumnDefinition Width="*" />
+        </Grid.ColumnDefinitions>
+
+        <DockPanel Grid.Column="0" Margin="0,0,12,0">
+            <StackPanel DockPanel.Dock="Top">
+                <TextBlock Text="Invoices" FontSize="28" FontWeight="Bold" Margin="0,0,0,10" />
+                <WrapPanel>
+                    <Button Content="Refresh" Command="{Binding LoadCommand}" />
+                    <Button Content="New" Command="{Binding NewCommand}" Style="{StaticResource SecondaryButton}" />
+                </WrapPanel>
+            </StackPanel>
+            <DataGrid ItemsSource="{Binding Invoices}" SelectedItem="{Binding SelectedInvoice}" Margin="0,8,0,0">
+                <DataGrid.Columns>
+                    <DataGridTextColumn Header="Number" Binding="{Binding InvoiceNumber}" Width="130" />
+                    <DataGridTextColumn Header="Client" Binding="{Binding Client.ClientName}" Width="*" />
+                    <DataGridTextColumn Header="Due" Binding="{Binding DueAmount, StringFormat=N2}" Width="90" />
+                    <DataGridTextColumn Header="Status" Binding="{Binding Status}" Width="90" />
+                </DataGrid.Columns>
+            </DataGrid>
+        </DockPanel>
+
+        <ScrollViewer Grid.Column="1" VerticalScrollBarVisibility="Auto">
+            <StackPanel>
+                <Border Style="{StaticResource Card}">
+                    <Grid>
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="*" />
+                            <ColumnDefinition Width="*" />
+                            <ColumnDefinition Width="*" />
+                        </Grid.ColumnDefinitions>
+                        <StackPanel Grid.Column="0" Margin="0,0,10,0">
+                            <TextBlock Text="Invoice Number" FontWeight="SemiBold" />
+                            <TextBox Text="{Binding CurrentInvoice.InvoiceNumber, UpdateSourceTrigger=PropertyChanged}" />
+                            <TextBlock Text="Client" FontWeight="SemiBold" />
+                            <ComboBox ItemsSource="{Binding Clients}" SelectedItem="{Binding SelectedClient}" DisplayMemberPath="ClientName" />
+                        </StackPanel>
+                        <StackPanel Grid.Column="1" Margin="0,0,10,0">
+                            <TextBlock Text="Invoice Date" FontWeight="SemiBold" />
+                            <DatePicker SelectedDate="{Binding CurrentInvoice.InvoiceDate}" />
+                            <TextBlock Text="Due Date" FontWeight="SemiBold" />
+                            <DatePicker SelectedDate="{Binding CurrentInvoice.DueDate}" />
+                        </StackPanel>
+                        <StackPanel Grid.Column="2">
+                            <TextBlock Text="Status" FontWeight="SemiBold" />
+                            <ComboBox ItemsSource="{Binding Statuses}" SelectedItem="{Binding CurrentInvoice.Status}" />
+                            <TextBlock Text="Payment Method" FontWeight="SemiBold" />
+                            <ComboBox ItemsSource="{Binding PaymentMethods}" SelectedItem="{Binding CurrentInvoice.PaymentMethod}" />
+                            <TextBlock Text="Notes" FontWeight="SemiBold" />
+                            <TextBox Text="{Binding CurrentInvoice.Notes, UpdateSourceTrigger=PropertyChanged}" Height="50" AcceptsReturn="True" />
+                        </StackPanel>
+                    </Grid>
+                </Border>
+
+                <Border Style="{StaticResource Card}">
+                    <StackPanel>
+                        <TextBlock Text="Add Product/Service Row" FontSize="18" FontWeight="SemiBold" Margin="0,0,0,8" />
+                        <WrapPanel>
+                            <ComboBox Width="260" ItemsSource="{Binding Products}" SelectedItem="{Binding SelectedProduct}" DisplayMemberPath="Name" />
+                            <StackPanel Width="100">
+                                <TextBlock Text="Qty" />
+                                <TextBox Text="{Binding LineQuantity, UpdateSourceTrigger=PropertyChanged}" />
+                            </StackPanel>
+                            <StackPanel Width="120">
+                                <TextBlock Text="Discount" />
+                                <TextBox Text="{Binding LineDiscount, UpdateSourceTrigger=PropertyChanged}" />
+                            </StackPanel>
+                            <StackPanel Width="100">
+                                <TextBlock Text="Tax %" />
+                                <TextBox Text="{Binding LineTaxRate, UpdateSourceTrigger=PropertyChanged}" />
+                            </StackPanel>
+                            <Button Content="Add Row" Command="{Binding AddLineCommand}" />
+                            <Button Content="Remove Row" Command="{Binding RemoveLineCommand}" Style="{StaticResource SecondaryButton}" />
+                            <Button Content="Recalculate" Command="{Binding RecalculateCommand}" Style="{StaticResource SecondaryButton}" />
+                        </WrapPanel>
+
+                        <DataGrid ItemsSource="{Binding Lines}" SelectedItem="{Binding SelectedLine}" Height="250">
+                            <DataGrid.Columns>
+                                <DataGridTextColumn Header="Description" Binding="{Binding Description}" Width="*" />
+                                <DataGridTextColumn Header="Qty" Binding="{Binding Quantity, StringFormat=N2}" Width="70" />
+                                <DataGridTextColumn Header="Unit" Binding="{Binding Unit}" Width="80" />
+                                <DataGridTextColumn Header="Rate" Binding="{Binding UnitPrice, StringFormat=N2}" Width="90" />
+                                <DataGridTextColumn Header="Discount" Binding="{Binding Discount, StringFormat=N2}" Width="90" />
+                                <DataGridTextColumn Header="Tax %" Binding="{Binding TaxRate, StringFormat=N2}" Width="70" />
+                                <DataGridTextColumn Header="Line Total" Binding="{Binding LineTotal, StringFormat=N2}" Width="100" />
+                            </DataGrid.Columns>
+                        </DataGrid>
+                    </StackPanel>
+                </Border>
+
+                <Border Style="{StaticResource Card}">
+                    <DockPanel>
+                        <UniformGrid Columns="6" DockPanel.Dock="Left" Width="790">
+                            <TextBlock Text="{Binding Subtotal, StringFormat=Subtotal: {0:N2}}" FontWeight="SemiBold" />
+                            <TextBlock Text="{Binding DiscountAmount, StringFormat=Discount: {0:N2}}" FontWeight="SemiBold" />
+                            <TextBlock Text="{Binding TaxAmount, StringFormat=Tax: {0:N2}}" FontWeight="SemiBold" />
+                            <TextBlock Text="{Binding GrandTotal, StringFormat=Total: {0:N2}}" FontWeight="Bold" />
+                            <TextBlock Text="{Binding PaidAmount, StringFormat=Paid: {0:N2}}" FontWeight="SemiBold" />
+                            <TextBlock Text="{Binding DueAmount, StringFormat=Due: {0:N2}}" FontWeight="Bold" />
+                        </UniformGrid>
+                        <StackPanel Orientation="Horizontal" HorizontalAlignment="Right">
+                            <Button Content="Save Invoice" Command="{Binding SaveCommand}" />
+                            <Button Content="Export PDF" Command="{Binding ExportPdfCommand}" Style="{StaticResource SecondaryButton}" />
+                        </StackPanel>
+                    </DockPanel>
+                </Border>
+            </StackPanel>
+        </ScrollViewer>
+    </Grid>
+</UserControl>

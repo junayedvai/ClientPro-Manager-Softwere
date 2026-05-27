@@ -1,0 +1,79 @@
+<UserControl x:Class="ClientProManager.Views.ClientsView"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
+    <Grid>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="2*" />
+            <ColumnDefinition Width="420" />
+        </Grid.ColumnDefinitions>
+
+        <DockPanel Grid.Column="0" Margin="0,0,12,0">
+            <StackPanel DockPanel.Dock="Top">
+                <TextBlock Text="Client Management" FontSize="28" FontWeight="Bold" Margin="0,0,0,10" />
+                <WrapPanel>
+                    <TextBox Width="260" Text="{Binding SearchText, UpdateSourceTrigger=PropertyChanged}" ToolTip="Search by name, phone, company, email" />
+                    <ComboBox Width="150" ItemsSource="{Binding Categories}" SelectedItem="{Binding SelectedCategory}" />
+                    <ComboBox Width="150" ItemsSource="{Binding PaymentStatuses}" SelectedItem="{Binding SelectedPaymentStatus}" />
+                    <Button Content="Search" Command="{Binding LoadCommand}" />
+                    <Button Content="New" Command="{Binding NewCommand}" Style="{StaticResource SecondaryButton}" />
+                    <Button Content="Disable" Command="{Binding DisableCommand}" Style="{StaticResource DangerButton}" />
+                </WrapPanel>
+            </StackPanel>
+
+            <DataGrid ItemsSource="{Binding Clients}"
+                      SelectedItem="{Binding SelectedClient}"
+                      Margin="0,8,0,0">
+                <DataGrid.Columns>
+                    <DataGridTextColumn Header="Client" Binding="{Binding ClientName}" Width="*" />
+                    <DataGridTextColumn Header="Company" Binding="{Binding CompanyName}" Width="*" />
+                    <DataGridTextColumn Header="Phone" Binding="{Binding Phone}" Width="120" />
+                    <DataGridTextColumn Header="Category" Binding="{Binding ClientCategory}" Width="110" />
+                    <DataGridTextColumn Header="Due" Binding="{Binding TotalDue, StringFormat=N2}" Width="100" />
+                    <DataGridTextColumn Header="Last Service" Binding="{Binding LastServiceDate, StringFormat=d}" Width="110" />
+                </DataGrid.Columns>
+            </DataGrid>
+        </DockPanel>
+
+        <ScrollViewer Grid.Column="1" VerticalScrollBarVisibility="Auto">
+            <StackPanel>
+                <Border Style="{StaticResource Card}">
+                    <StackPanel>
+                        <TextBlock Text="Client Profile" FontSize="20" FontWeight="SemiBold" />
+                        <TextBlock Text="Name" FontWeight="SemiBold" />
+                        <TextBox Text="{Binding EditableClient.ClientName, UpdateSourceTrigger=PropertyChanged}" />
+                        <TextBlock Text="Company" FontWeight="SemiBold" />
+                        <TextBox Text="{Binding EditableClient.CompanyName, UpdateSourceTrigger=PropertyChanged}" />
+                        <TextBlock Text="Phone" FontWeight="SemiBold" />
+                        <TextBox Text="{Binding EditableClient.Phone, UpdateSourceTrigger=PropertyChanged}" />
+                        <TextBlock Text="Email" FontWeight="SemiBold" />
+                        <TextBox Text="{Binding EditableClient.Email, UpdateSourceTrigger=PropertyChanged}" />
+                        <TextBlock Text="Address" FontWeight="SemiBold" />
+                        <TextBox Text="{Binding EditableClient.Address, UpdateSourceTrigger=PropertyChanged}" AcceptsReturn="True" Height="54" />
+                        <TextBlock Text="Business Type" FontWeight="SemiBold" />
+                        <TextBox Text="{Binding EditableClient.BusinessType, UpdateSourceTrigger=PropertyChanged}" />
+                        <TextBlock Text="Category" FontWeight="SemiBold" />
+                        <TextBox Text="{Binding EditableClient.ClientCategory, UpdateSourceTrigger=PropertyChanged}" />
+                        <TextBlock Text="Payment Status" FontWeight="SemiBold" />
+                        <TextBox Text="{Binding EditableClient.PaymentStatus, UpdateSourceTrigger=PropertyChanged}" />
+                        <TextBlock Text="Total Due" FontWeight="SemiBold" />
+                        <TextBox Text="{Binding EditableClient.TotalDue, UpdateSourceTrigger=PropertyChanged}" />
+                        <TextBlock Text="Last Service Date" FontWeight="SemiBold" />
+                        <DatePicker SelectedDate="{Binding EditableClient.LastServiceDate}" />
+                        <TextBlock Text="Previous Work History" FontWeight="SemiBold" />
+                        <TextBox Text="{Binding EditableClient.PreviousWorkHistory, UpdateSourceTrigger=PropertyChanged}" AcceptsReturn="True" Height="66" />
+                        <TextBlock Text="Notes" FontWeight="SemiBold" />
+                        <TextBox Text="{Binding EditableClient.Notes, UpdateSourceTrigger=PropertyChanged}" AcceptsReturn="True" Height="66" />
+                        <Button Content="Save Client" Command="{Binding SaveCommand}" HorizontalAlignment="Stretch" />
+                    </StackPanel>
+                </Border>
+
+                <Border Style="{StaticResource Card}">
+                    <StackPanel>
+                        <TextBlock Text="{Binding ProfileTotalPaid, StringFormat=Total paid: {0:N2} BDT}" FontWeight="SemiBold" />
+                        <TextBlock Text="{Binding EditableClient.TotalDue, StringFormat=Total due: {0:N2} BDT}" FontWeight="SemiBold" />
+                    </StackPanel>
+                </Border>
+            </StackPanel>
+        </ScrollViewer>
+    </Grid>
+</UserControl>

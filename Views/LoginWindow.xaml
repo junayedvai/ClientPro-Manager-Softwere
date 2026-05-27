@@ -1,0 +1,50 @@
+<Window x:Class="ClientProManager.Views.LoginWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:helpers="clr-namespace:ClientProManager.Helpers"
+        Title="ClientPro Manager Login"
+        Width="460"
+        Height="520"
+        Icon="/Resources/ClientProManager.ico"
+        ResizeMode="NoResize"
+        WindowStartupLocation="CenterScreen"
+        Background="{StaticResource PageBrush}">
+    <Grid>
+        <Border Width="360"
+                Style="{StaticResource Card}"
+                HorizontalAlignment="Center"
+                VerticalAlignment="Center">
+            <StackPanel>
+                <TextBlock Text="ClientPro Manager"
+                           FontSize="28"
+                           FontWeight="Bold"
+                           Foreground="{StaticResource PrimaryDarkBrush}" />
+                <TextBlock Text="Windows Desktop Client, Invoice &amp; Service Management System"
+                           Foreground="{StaticResource MutedTextBrush}"
+                           Margin="0,6,0,24" />
+
+                <TextBlock Text="Username" FontWeight="SemiBold" />
+                <TextBox Text="{Binding Username, UpdateSourceTrigger=PropertyChanged}" />
+
+                <TextBlock Text="Password" FontWeight="SemiBold" />
+                <PasswordBox helpers:PasswordBoxAssistant.BoundPassword="{Binding Password, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
+
+                <Button Content="Sign In"
+                        Command="{Binding LoginCommand}"
+                        Margin="0,12,0,6" />
+
+                <TextBlock Text="{Binding StatusMessage}"
+                           Foreground="{StaticResource MutedTextBrush}"
+                           Margin="0,12,0,0" />
+
+                <Border Background="{StaticResource AccentPaleBrush}"
+                        Padding="10"
+                        CornerRadius="6"
+                        Margin="0,20,0,0">
+                    <TextBlock Text="Default admin: admin / admin123"
+                               Foreground="{StaticResource PrimaryDarkBrush}" />
+                </Border>
+            </StackPanel>
+        </Border>
+    </Grid>
+</Window>
